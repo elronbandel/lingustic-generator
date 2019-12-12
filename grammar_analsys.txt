@@ -1,0 +1,423 @@
+# (a) Sally ate a sandwich .
+#
+#Pos:
+#    Sally\NNP ate\Verb a\Det sandwich\Noun .\.
+#
+#Tree:
+#     (ROOT
+#        (S
+#           (Noun-u Sally) #Noun-u unique (cannot start with a or the)
+#           (VP
+#               (Verb ate)
+#               (NP
+#                     (Det a)
+#                     (Noun sandwitch)
+#
+#Rules:
+
+1   ROOT  S .
+1   S   Noun-u VP
+1   Noun-u  sally
+1   VP  Verb NP
+1   NP  Det Noun
+1   Det a
+1   Noun    sandwitch
+
+
+# (b) Sally and the president wanted and ate a sandwich .
+#
+#Pos:
+#    Sally\NNP and\Conj the\Det presidnt\Noun wanted\Verb and\CC ate\Verb a\Det \Sandwitch
+#
+#Tree:
+#     (ROOT
+#        (S
+#            (NP
+#                (NP (Noun-u Sally)
+#                (CC-NP
+#                    (Conj and)
+#                    (NP
+#                        (Det the)
+#                        (Noun president)))))
+#            (VP
+#                (Verb wanted)
+#                (CC-VP
+#                    (Conj and)
+#                    (VP
+#                        (Verb ate)
+#                        (NP
+#                            (Det a)
+#                            (Noun sandwitch))))).))
+#Rules:
+
+1   ROOT  S .
+1   NP   NP CC-NP
+1   CC-NP   Conj NP
+1   Conj    and
+1   NP  Det Noun
+1   VP  Verb CC-VP
+1   CC-VP   Conj VP\CC-VP
+1   VP\CC-VP Verb NP
+1   NP  Det Noun
+1   Noun    sandwich
+1   Noun-u   sally
+1   Conj    and
+
+
+# (c) the president sighed .
+#
+#Pos: the\Det president\Noun sighed\Verb
+#
+#Tree:
+#     (ROOT
+#        (S
+#           (NP
+#               (Det the)
+#               (Noun president))
+#           (Verb-d sighed)).)
+#
+#Rules:
+
+1  ROOT    S .
+1  S   NP Verb
+1  NP  Det Noun
+1  Det the
+1  Noun    president
+1  Verb-d    sighed
+
+
+# (d) the president thought that a sandwich sighed .
+#
+#Pos: the\Det president\Noun thought\Verb-c that\Comp a\Det sandwich\Noun sighed\Verb-d .
+#
+#Tree:
+#     (ROOT
+#        (S
+#           (NP
+#               (Det the)
+#               (Noun president))
+#           (VP
+#               (Verb-c thought)  #Verb-c verb that is composable
+#               (CP
+#                    (Comp that)
+#                    (S
+#                        (NP
+#                                (Det a)
+#                                (Noun sandwich))
+#                        (Verb-d sighed)))))).)) #Verb-d verb that is distrinsic
+#
+#Rules:
+
+1   ROOT    S .
+1   S   NP VP
+1   NP  Det Noun
+1   Det The
+1   Noun president
+1   VP  Verb-c CP
+1   Verb-c thought
+1   CP  Comp S
+1   Comp that
+1   S   NP Verb-d
+1   NP  Det Noun
+1   Det a
+1   Noun sandwich
+1   Verb-d sighed
+
+
+# (e) it perplexed the president that a sandwich ate Sally .
+#
+#Pos: it perplexed the president that a sandwich ate Sally .
+#
+#Tree:
+#    (ROOT
+#        (S
+#            (Noun-u it)
+#            (VP/S
+#                (Verb-cd perplexed) #special form of verb that can be composed but is distrinsic
+#                (NP-CP
+#                        (NP
+#                            (Det the)
+#                            (Noun president))
+#                        (CP
+#                            (Comp that)
+#                            (S
+#                                (NP
+#                                    (Det a)
+#                                    (Noun sandwich))
+#                                (VP
+#                                    (Verb ate)
+#                                    (Noun-u Sally)))))).))
+#
+#Rules:
+
+1   ROOT    S .
+1   S   Noun-u VP/S
+1   VP/S  Verb-cd NP-CP
+1   Verb-cd  perplexed
+1   NP-CP   NP CP
+1   NP  Det Noun
+1   Det the
+1   Noun president
+1   CP Comp S
+1   Comp    that
+1   S   NP VP
+1   NP  Det Noun
+1   VP  Verb Noun-u
+1   Det a
+1   Noun sandwich
+1   Verb    ate
+1   Noun-u Sally
+
+
+# (f) the very very very perplexed president ate a sandwich .
+#
+#Pos: the\Det very\Adv very\Adv very\Adv perplexed\Adj president\Noun ate\Verb a\Det sandwich\Noun .
+#
+#Tree:
+#    (ROOT
+#        (S
+#            (NP
+#                (Det the)
+#                (NP/NP
+#                    (AP
+#                        (Adv very)
+#                        (AP
+#                            (Adv very)
+#                            (AP
+#                                (Adv very)
+#                                (Adj perplexed))))
+#                    (Noun president)))
+#            (VP
+#                (Verb ate)
+#                (NP
+#                    (Det a)
+#                    (Noun sandwich))).))
+#
+#Rules:
+
+1   ROOT    S .
+1   S   NP VP
+1   NP  Det NP/NP
+1   Det the
+1   NP/NP   AP Noun
+1   AP  Adv AP
+1   Adv very
+1   AP  Adv AP
+1   Adv very
+1   AP  Adv Adj
+1   Adv very
+1   Adj perplexed
+1   Noun president
+1   VP Verb NP
+1   Verb    ate
+1   NP  Det Noun
+1   Det a
+1   Noun sandwich
+
+
+# (g) the president worked on every proposal on the desk .
+#
+#Pos: the\Det president\Noun worked\Verb-d on\Prep every\Det proposal\Noun on\Prep the\Det desk\Noun .
+#
+#Tree:
+#    (ROOT
+#        (S
+#            (NP
+#                (Det the)
+#                (Noun president))
+#            (VP
+#                (Verb-d worked)
+#                (PP
+#                    (Prep on)
+#                    (NP\PP
+#                        (NP
+#                            (Det every)
+#                            (Noun proposal))
+#                        (PP
+#                            (Prep on)
+#                            (NP\PP
+#                                (Det the)
+#                                (Noun desk)))))).))
+#                         
+#    
+#Rules:
+
+
+1   ROOT    S .
+1   S   NP VP
+1   Det the
+1   Noun    president
+1   VP  Verb PP
+1   Verb-d    worked
+1   PP  Prep NP\PP
+1   Prep    on
+1   NP\PP   NP PP
+1   NP  Det Noun
+1   PP  Prep NP\PP
+1   Prep on
+1   NP\PP   Det Noun
+1   Det the
+1   Noun desk
+
+
+# (h) Sally is lazy .
+#
+#Pos: Sally\Noun-u is\Verb-z lazy\Adj
+#
+#Tree:
+#    (ROOT
+#        (S
+#            (Noun-u Sally)
+#            (VP
+#                (Verb-z is) #auxilary verb
+#                (Adj lazy)).))
+#
+#Rules:
+
+1   ROOT    S .
+1   S   Noun-u VP
+1   Noun-u  Sally
+1   VP  Verb-z Adj
+1   Verb-z  is
+1   Adj lazy
+
+# (i) Sally is eating a sandwich.
+#
+#Pos: Sally\Noun-u is\Verb-z eating\Adj
+#
+#Tree:
+#    (ROOT
+#        (S
+#            (Noun-u Sally)
+#            (VP
+#                (Verb-z is) #auxilary verb
+#                (VPG
+#                   (Verb-g eating) #ing verb
+#                   (NP
+#                       (Det a)
+#                       (Noun Pizza)))).))
+#
+#Rules:
+
+1   ROOT    S .
+1   S   Noun-u VP
+1   Noun-u  Sally
+1   VP  Verb-z VPG
+1   VPG Verb-g NP
+1   Verb-g  eating
+1   NP  Det Noun
+1   Det a
+1   Noun Pizza
+
+
+# (j) the president thought that sally is a sandwich .
+#
+#Pos: the\Det president\Noun thought\Verb-c that\Comp a\Det sandwich\Noun sighed\Verb-d .
+#
+#Tree:
+#     (ROOT
+#        (S
+#           (NP
+#               (Det the)
+#               (Noun president))
+#           (VP
+#               (Verb-c thought)  #Verb-c verb that is composable
+#               (CP
+#                    (Comp that)
+#                       (S
+#                           (Noun-u Sally)
+#                           (VP
+#                               (Verb-z is) #auxilary verb
+#                               (NP
+#                                    (Det a)
+#                                    (Noun sandwich)))).))
+#
+#Rules:
+
+1   ROOT    S .
+1   S   NP VP
+1   NP  Det Noun
+1   Det The
+1   Noun president
+1   VP  Verb-c CP
+1   Verb-c thought
+1   CP  Comp S
+1   Comp that
+1   S   Noun-u VP
+1   Noun-u  Sally
+1   VP  Verb-z NP
+1   NP  Det Noun
+1   Det a
+1   Noun sandwich
+# Symbols in the grammar are case-sensitive.
+#
+# This grammar uses a convention that
+#    - terminals are lowercase          (president)
+#    - preterminals are capitalized     (Noun)
+#    - other nonterminals are all-caps  (NP)
+#
+# This convention just makes grammars more readable to humans.  Thus:
+#
+#    - When *you* are writing grammars, you should
+#      follow this convention unless you have a good reason not to.
+#
+#    - But the  *program* should still work with grammars that don't
+#      follow this convention.  So how can the program reliably tell
+#      the difference between terminal and nonterminal symbols?  If
+#      there is at least one rule for rewriting a symbol, then that
+#      symbol is a nonterminal and should be rewritten.
+#######################
+
+# Rules for creating full sentences.
+
+1	ROOT	S .
+1	ROOT	S !
+1	ROOT	is it true that S ?     # mixing terminals and nonterminals is ok.
+
+# The basic grammar rules.  Here's what the abbreviations stand for:
+#    S  = sentence
+#    NP = noun phrase
+#    VP = verb phrase
+#    PP = prepositional phrase
+#    Det = determiner (sometimes called "article")
+#    Prep = preposition
+#    Adj = adjective
+
+1	S	NP VP
+1	VP	Verb NP
+4	NP	Det Noun
+1	NP	NP PP
+1	PP	Prep NP
+1	Noun	Adj Noun
+
+# Vocabulary.  Your program can see that "ate" is a terminal
+# symbol because there exists no rule for rewriting it.
+# Any symbol that can rewrite as a terminal (or a string of
+# terminals, like "chief of staff") is called a "preterminal."  Notice
+# that a preterminal is a special kind of nonterminal.
+
+1	Verb	ate
+1	Verb	wanted
+1	Verb	kissed
+1	Verb	understood
+1	Verb	pickled
+
+1	Det	the
+1	Det	a
+1	Det	every
+
+1	Noun	president
+1	Noun	sandwich
+1	Noun	pickle
+1	Noun	chief of staff
+1	Noun	floor
+
+1	Adj	fine
+1	Adj	delicious
+1	Adj	perplexed
+1	Adj	pickled
+
+1	Prep	with
+1	Prep	on
+1	Prep	under
+1	Prep	in
