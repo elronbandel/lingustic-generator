@@ -71,7 +71,6 @@
 
 3   S   Noun-u VP
 1   Noun-u  Sally
-1   Noun    sandwitch
 
 # (b) Sally and the president wanted and ate a sandwich .
 #
@@ -103,7 +102,7 @@
 1   CC-NP   Conj NP
 1   VP  Verb CC-VP
 1   CC-VP   Conj VP\CC-VP
-3   VP\CC-VP Verb NP
+2   VP\CC-VP Verb NP
 1   Conj    and
 
 # (c) the president sighed .
@@ -233,7 +232,7 @@
 #            (NP
 #                (Det the)
 #                (Noun president))
-#            (VP
+#            (VP-PP
 #                (Verb-d worked)
 #                (PP
 #                    (Prep on)
@@ -250,11 +249,11 @@
 #    
 #Rules:
 
-
-1   VP  Verb-d PP
+2   S   NP VP-PP
+1   VP-PP  Verb-d PP
 1   NP\PP   NP PP
 1   PP  Prep NP\PP
-1   NP\PP   Det Noun
+4   NP\PP   Det Noun
 
 
 # (h) Sally is lazy .
@@ -328,4 +327,3 @@
 1   VP  Verb-c CP
 1   Verb-c thought
 1   VP  Verb-z NP
-
