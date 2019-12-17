@@ -1,3 +1,57 @@
+# introduction:
+# in this file we first included the old rules with weights that make the more common ones more common in the generated sentences.
+# the metodolgy we used is first to analyse the parsing tree of the sentences and then to derive rules
+# than, we modified the Rules to fit the complexities of the Rules Combinations
+
+#######################################
+# the old Rules
+########################################
+
+3	ROOT	S .
+2	ROOT	S !
+1	ROOT	is it true that S ?     # mixing terminals and nonterminals is ok.
+5	S	NP VP
+2	VP	Verb NP
+4	NP	Det Noun
+2	NP	NP PP
+3	PP	Prep NP
+3	Noun	Adj Noun
+1	Verb	ate
+1	Verb	wanted
+1	Verb	kissed
+1	Verb	understood
+1	Verb	pickled
+1	Det	the
+1	Det	a
+1	Det	every
+1	Noun	president
+1	Noun	sandwich
+1	Noun	pickle
+1	Noun	chief of staff
+1	Noun	floor
+1	Adj	fine
+1	Adj	delicious
+1	Adj	perplexed
+1	Adj	pickled
+1	Prep	with
+1	Prep	on
+1	Prep	under
+1	Prep	in
+
+############################################
+# The extended new grammar rules.  with new conventions
+#   Part-x = Part of kind x
+#   T1-T2 = Non Terminal lead to T1, T2
+#   T1/T2 = T1 that arrived from T2
+############################################
+
+###########################
+#
+# genrating new rules by their grammar tree:
+#
+##########################
+
+
 # (a) Sally ate a sandwich .
 #
 #Pos:
@@ -13,16 +67,11 @@
 #                     (Det a)
 #                     (Noun sandwitch)
 #
-#Rules:
+#New Rules:
 
-1   ROOT  S .
-1   S   Noun-u VP
-1   Noun-u  sally
-1   VP  Verb NP
-1   NP  Det Noun
-1   Det a
+3   S   Noun-u VP
+1   Noun-u  Sally
 1   Noun    sandwitch
-
 
 # (b) Sally and the president wanted and ate a sandwich .
 #
@@ -48,21 +97,14 @@
 #                        (NP
 #                            (Det a)
 #                            (Noun sandwitch))))).))
-#Rules:
+#New Rules:
 
-1   ROOT  S .
 1   NP   NP CC-NP
 1   CC-NP   Conj NP
-1   Conj    and
-1   NP  Det Noun
 1   VP  Verb CC-VP
 1   CC-VP   Conj VP\CC-VP
-1   VP\CC-VP Verb NP
-1   NP  Det Noun
-1   Noun    sandwich
-1   Noun-u   sally
+3   VP\CC-VP Verb NP
 1   Conj    and
-
 
 # (c) the president sighed .
 #
@@ -76,15 +118,9 @@
 #               (Noun president))
 #           (Verb-d sighed)).)
 #
-#Rules:
+#New Rules:
 
-1  ROOT    S .
-1  S   NP Verb
-1  NP  Det Noun
-1  Det the
-1  Noun    president
 1  Verb-d    sighed
-
 
 # (d) the president thought that a sandwich sighed .
 #
@@ -106,21 +142,13 @@
 #                                (Noun sandwich))
 #                        (Verb-d sighed)))))).)) #Verb-d verb that is distrinsic
 #
-#Rules:
-1   ROOT    S .
-1   S   NP VP
-1   NP  Det Noun
-1   Det The
-1   Noun president
+#New Rules:
+
 1   VP  Verb-c CP
 1   Verb-c thought
 1   CP  Comp S
 1   Comp that
-1   S   NP Verb-d
-1   NP  Det Noun
-1   Det a
-1   Noun sandwich
-1   Verb-d sighed
+2   S   NP Verb-d
 
 
 # (e) it perplexed the president that a sandwich ate Sally .
@@ -131,7 +159,7 @@
 #    (ROOT
 #        (S
 #            (Noun-u it)
-#            (VP/S
+#            (VP\S
 #                (Verb-cd perplexed) #special form of verb that can be composed but is distrinsic
 #                (NP-CP
 #                        (NP
@@ -149,23 +177,12 @@
 #
 #Rules:
 
-1   ROOT    S .
-1   S   Noun-u VP/S
-1   VP/S  Verb-cd NP-CP
+1   S   Noun-u VP\S
+1   VP\S  Verb-cd NP-CP
 1   Verb-cd  perplexed
 1   NP-CP   NP CP
-1   NP  Det Noun
-1   Det the
-1   Noun president
-1   CP Comp S
 1   Comp    that
-1   S   NP VP
-1   NP  Det Noun
 1   VP  Verb Noun-u
-1   Det a
-1   Noun sandwich
-1   Verb    ate
-1   Noun-u Sally
 
 
 # (f) the very very very perplexed president ate a sandwich .
@@ -177,7 +194,7 @@
 #        (S
 #            (NP
 #                (Det the)
-#                (NP/NP
+#                (NP\NP
 #                    (AP
 #                        (Adv very)
 #                        (AP
@@ -192,26 +209,18 @@
 #                    (Det a)
 #                    (Noun sandwich))).))
 #
-#Rules:
+#New Rules:
 
-1   ROOT    S .
-1   S   NP VP
-1   NP  Det NP/NP
-1   Det the
-1   NP/NP   AP Noun
-1   AP  Adv AP
+
+1   NP  Det NP\NP
+1   NP\NP   AP Noun
+3   AP  Adv Adj
+1   AP\AP  Adv Adv
+1   AP AP\AP Adj
 1   Adv very
-1   AP  Adv AP
-1   Adv very
-1   AP  Adv Adj
-1   Adv very
-1   Adj perplexed
 1   Noun president
 1   VP Verb NP
-1   Verb    ate
-1   NP  Det Noun
-1   Det a
-1   Noun sandwich
+
 
 
 # (g) the president worked on every proposal on the desk .
@@ -228,7 +237,7 @@
 #                (Verb-d worked)
 #                (PP
 #                    (Prep on)
-#                    (NP\PP
+#                    (NP\PP    #spaical case for this places
 #                        (NP
 #                            (Det every)
 #                            (Noun proposal))
@@ -242,19 +251,10 @@
 #Rules:
 
 
-1   ROOT    S .
-1   S   NP VP
-1   Det the
-1   Noun    president
-1   VP  Verb PP
-1   Verb-d    worked
+1   VP  Verb-d PP
 1   NP\PP   NP PP
-1   NP  Det Noun
 1   PP  Prep NP\PP
-1   Prep on
 1   NP\PP   Det Noun
-1   Det the
-1   Noun desk
 
 
 # (h) Sally is lazy .
@@ -271,9 +271,6 @@
 #
 #Rules:
 
-1   ROOT    S .
-1   S   Noun-u VP
-1   Noun-u  Sally
 1   VP  Verb-z Adj
 1   Verb-z  is
 1   Adj lazy
@@ -296,14 +293,10 @@
 #
 #Rules:
 
-1   ROOT    S .
-1   S   Noun-u VP
-1   Noun-u  Sally
+
 1   VP  Verb-z VPG
 1   VPG Verb-g NP
 1   Verb-g  eating
-1   NP  Det Noun
-1   Det a
 1   Noun Pizza
 
 
@@ -331,90 +324,8 @@
 #
 #Rules:
 
-1   ROOT    S .
-1   S   NP VP
-1   NP  Det Noun
-1   Det The
-1   Noun president
+
 1   VP  Verb-c CP
 1   Verb-c thought
-1   CP  Comp S
-1   Comp that
-1   S   Noun-u VP
-1   Noun-u  Sally
 1   VP  Verb-z NP
-1   NP  Det Noun
-1   Det a
-1   Noun sandwich
-# Symbols in the grammar are case-sensitive.
-#
-# This grammar uses a convention that
-#    - terminals are lowercase          (president)
-#    - preterminals are capitalized     (Noun)
-#    - other nonterminals are all-caps  (NP)
-#
-# This convention just makes grammars more readable to humans.  Thus:
-#
-#    - When *you* are writing grammars, you should
-#      follow this convention unless you have a good reason not to.
-#
-#    - But the  *program* should still work with grammars that don't
-#      follow this convention.  So how can the program reliably tell
-#      the difference between terminal and nonterminal symbols?  If
-#      there is at least one rule for rewriting a symbol, then that
-#      symbol is a nonterminal and should be rewritten.
-#######################
 
-# Rules for creating full sentences.
-
-1	ROOT	S .
-1	ROOT	S !
-1	ROOT	is it true that S ?     # mixing terminals and nonterminals is ok.
-
-# The basic grammar rules.  Here's what the abbreviations stand for:
-#    S  = sentence
-#    NP = noun phrase
-#    VP = verb phrase
-#    PP = prepositional phrase
-#    Det = determiner (sometimes called "article")
-#    Prep = preposition
-#    Adj = adjective
-
-1	S	NP VP
-1	VP	Verb NP
-4	NP	Det Noun
-1	NP	NP PP
-1	PP	Prep NP
-1	Noun	Adj Noun
-
-# Vocabulary.  Your program can see that "ate" is a terminal
-# symbol because there exists no rule for rewriting it.
-# Any symbol that can rewrite as a terminal (or a string of
-# terminals, like "chief of staff") is called a "preterminal."  Notice
-# that a preterminal is a special kind of nonterminal.
-
-1	Verb	ate
-1	Verb	wanted
-1	Verb	kissed
-1	Verb	understood
-1	Verb	pickled
-
-1	Det	the
-1	Det	a
-1	Det	every
-
-1	Noun	president
-1	Noun	sandwich
-1	Noun	pickle
-1	Noun	chief of staff
-1	Noun	floor
-
-1	Adj	fine
-1	Adj	delicious
-1	Adj	perplexed
-1	Adj	pickled
-
-1	Prep	with
-1	Prep	on
-1	Prep	under
-1	Prep	in
