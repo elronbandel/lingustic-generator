@@ -6,10 +6,6 @@
 # the full analasys is under the summarized grammar
 #######################################
 
-#######################################
-# the old Rules
-########################################
-
 ############################################
 # The extended new grammar rules.  with new conventions
 #   Part-x = Part of kind x
@@ -90,7 +86,7 @@
 
 ###########################
 #
-# genrating new rules by their grammar tree:
+# review of the process of generating new rules by their grammar tree:
 #
 ##########################
 
