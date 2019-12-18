@@ -61,12 +61,12 @@
 1	Noun	Adj Noun
 
 1	Verb	ate
-1	Verb	wanted
+1	Verb	hugged
 1	Verb	kissed
-1	Verb	understood
-1	Verb	pickled
-1   Verb-c thought   #verb that carry complex sentence "tought that" + S
-1   Verb-g  eating   #verb with ing
+1	Verb	brought
+
+1   Verb-c claimed   #verb that carry complex sentence "tought that" + S
+1   Verb-g  sleeping   #verb with ing
 1	Verb-d    sighed  #disterminstic verb
 1   Verb-cd  perplexed  #verb that is complex disterminstic
 1   Verb-z  is
@@ -75,18 +75,17 @@
 4	Det	a
 1	Det	every
 
-1	Noun	president
-1	Noun	sandwich
-1	Noun	pickle
-1	Noun	chief of staff
-1	Noun	floor
-1   Noun	pizza
+1	Noun	dad
+1	Noun	mom
+1	Noun	son
+1	Noun	bed
+1   Noun	room
 1   Noun-u  Sally   #noun which is proper or unique
 
 1	Adj	fine
-1	Adj	delicious
-1	Adj	perplexed
-1	Adj	pickled
+1	Adj	creepy
+1	Adj	passionate
+1	Adj	nerdy
 1   Adj	lazy
 
 1   Adv very

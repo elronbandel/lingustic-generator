@@ -1,0 +1,144 @@
+# a + b
+#######################################
+# introduction:
+# in this file we first included the old rules with weights that make the more common ones more common in the generated sentences.
+# the metodolgy we used is first to analyse the parsing tree of the sentences and then to derive rules
+# than, we modified the Rules to fit the complexities of the Rules Combinations
+# the full analasys is under the summarized grammar
+#######################################
+
+############################################
+# The extended new grammar rules.  with new conventions
+#   Part-x = Part of kind x
+#   T1-T2 = Non Terminal lead to T1, T2
+#   T1/T2 = T1 that arrived from T2
+############################################
+10	ROOT	S .
+2	ROOT	S !
+1	ROOT	is it true that S ?     
+
+5	S	NP VP
+2   S   NP Verb-d
+1   S   Noun-u VP\S
+3   S   Noun-u VP
+
+2	VP	Verb NP
+1   VP Verb NP
+1   VP  Verb-z Adj
+1   VP  Verb-z VPG
+1   VPG Verb-g NP
+1   VP  Verb-c CP
+1   VP  Verb-z NP
+1   VP\S  Verb-cd NP-CP
+1   VP  Verb Noun-u
+
+10	NP	Det Noun
+1	NP	NP PP
+1   NP-CP   NP CP
+1   NP  Det NP\NP
+1   NP\NP   AP Noun
+
+1	PP	Prep NP
+1   CP  Comp S
+3   AP  Adv Adj
+1   AP\AP  Adv Adv
+1   AP AP\AP Adj
+
+1	Noun	Adj Noun
+
+4	Verb	ate
+4	Verb	wanted
+4	Verb	kissed
+5	Verb	understood
+1	Verb	pickled
+1   Verb-c thought   #verb that carry complex sentence "tought that" + S
+6   Verb-g  eating   #verb with ing
+4	Verb-d    sighed  #disterminstic verb
+1   Verb-cd  perplexed  #verb that is complex disterminstic
+1   Verb-z  is
+
+4	Det	the
+4	Det	a
+1	Det	every
+
+6	Noun	president
+8	Noun	sandwich
+1	Noun	pickle
+1	Noun	chief of staff
+3	Noun	floor
+3   Noun	pizza
+1   Noun-u  Sally   #noun which is proper or unique
+
+15	Adj	fine
+10	Adj	delicious
+1	Adj	perplexed
+1	Adj	pickled
+7   Adj	lazy
+
+1   Adv very
+
+1	Prep	with
+1	Prep	on
+1	Prep	under
+1	Prep	in
+
+3   Comp    that
+
+
+
+
+#4
+# a - (an vs a)
+# Noun that starts with - (a e i o u letters) will be AEINoun
+# adjective that start with (a e i o u letters)  will be AEIAdj
+# adverb that start with (a e i o u letters)  will be AEIAdv
+
+5 NP A_NP 
+5 NP AN_NP
+
+5 A_NP a Noun
+5 AN_NP an AEINoun
+
+
+
+1 Noun Adj AEINoun
+1 Noun Adj Noun
+1 AEINoun AEIAdj AEINoun
+1 AEINoun AEIAdj Noun
+
+
+2 AEIAdj AEIAdv Adj
+2 AEIAdj AEIAdv AEIAdj
+1 Adj Adj AEIAdv AEIAdj
+
+
+4 AEINoun apple
+4 AEINoun orange
+5 Noun banana
+
+2 AEIAdv extraordinary
+1 AEIAdj ambivalent
+4 AEIAdj amazing
+
+
+# b (yes/no question)
+5   ROOT   QYN
+4   QYN ynqs Noun-u Verb-p NP ?
+10  QYN Verb-z Noun-u Adj ?
+5   QYN Verb-z Noun-u Det Noun ?
+1   QYN Verb-z Noun-u Verb Noun-u ?
+5   QYN Verb-z Noun-u Verb-g Noun ?
+3   QYN Verb-z Noun Verb-g Noun ?
+3   QYN Verb-z Noun Verb-g A_NP ?
+3   QYN Verb-z Noun Verb-g AN_NP ?
+
+
+1   ynqs will       #ynqs - yes no question start
+1   ynqs did        #ynqs - yes no question start
+1   Verb-p eat       #verb present
+1   Verb-p read
+1   Verb-p drink
+3   Noun water
+
+
+

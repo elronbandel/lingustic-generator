@@ -1,0 +1,5 @@
+(ROOT (S (NP (NP (Det the) (Noun floor)) (PP (Prep in) (NP (Det the) (Noun pizza)))) (VP (Verb-z is) (Adj pickled))) !)
+(ROOT is it true that (S (Noun-u Sally) (VP\S (Verb-cd perplexed) (NP-CP (NP (Det a) (Noun president)) (CP (Comp that) (S (NP (Det the) (Noun pickle)) (VP (Verb-z is) (VPG (Verb-g eating) (NP (Det the) (NP\NP (AP (AP\AP (Adv very) (Adv very)) (Adj perplexed)) (Noun floor)))))))))) ?)
+(ROOT (S (Noun-u Sally) (VP\S (Verb-cd perplexed) (NP-CP (NP (Det the) (Noun pizza)) (CP (Comp that) (S (NP (Det the) (Noun sandwich)) (Verb-d sighed)))))) .)
+(ROOT (S (Noun-u Sally) (VP (Verb-z is) (NP (Det the) (Noun pizza)))) .)
+(ROOT (S (NP (Det the) (Noun pickle)) (VP (Verb-c thought) (CP (Comp that) (S (NP (Det the) (Noun president)) (VP (Verb-z is) (Adj perplexed)))))) !)
