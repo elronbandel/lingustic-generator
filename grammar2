@@ -38,12 +38,6 @@
 1	Prep	under
 1	Prep	in
 
-############################################
-# The extended new grammar rules.  with new conventions
-#   Part-x = Part of kind x
-#   T1-T2 = Non Terminal lead to T1, T2
-#   T1/T2 = T1 that arrived from T2
-############################################
 
 ###########################
 #

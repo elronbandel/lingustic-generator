@@ -1,4 +1,21 @@
+#######################################
+# introduction:
+# in this file we first included the old rules with weights that make the more common ones more common in the generated sentences.
+# the metodolgy we used is first to analyse the parsing tree of the sentences and then to derive rules
+# than, we modified the Rules to fit the complexities of the Rules Combinations
+# the full analasys is under the summarized grammar
+#######################################
 
+#######################################
+# the old Rules
+########################################
+
+############################################
+# The extended new grammar rules.  with new conventions
+#   Part-x = Part of kind x
+#   T1-T2 = Non Terminal lead to T1, T2
+#   T1/T2 = T1 that arrived from T2
+############################################
 3	ROOT	S .
 2	ROOT	S !
 1	ROOT	is it true that S ?     
@@ -71,9 +88,272 @@
 1   Comp    that
 
 
+###########################
+#
+# genrating new rules by their grammar tree:
+#
+##########################
+
+
+# (a) Sally ate a sandwich .
+#
+#Pos:
+#    Sally\NNP ate\Verb a\Det sandwich\Noun .\.
+#
+#Tree:
+#     (ROOT
+#        (S
+#           (Noun-u Sally) #Noun-u unique (cannot start with a or the)
+#           (VP
+#               (Verb ate)
+#               (NP
+#                     (Det a)
+#                     (Noun sandwitch)
+#
+#New Rules:
+#   S   Noun-u VP
+#   Noun-u  Sally
+
+# (b) Sally and the president wanted and ate a sandwich .
+#
+#Pos:
+#    Sally\NNP and\Conj the\Det presidnt\Noun wanted\Verb and\CC ate\Verb a\Det \Sandwitch
+#
+#Tree:
+#     (ROOT
+#        (S
+#            (NP
+#                (NP (Noun-u Sally)
+#                (CC-NP
+#                    (Conj and)
+#                    (NP
+#                        (Det the)
+#                        (Noun president)))))
+#            (VP
+#                (Verb wanted)
+#                (CC-VP
+#                    (Conj and)
+#                    (VP
+#                        (Verb ate)
+#                        (NP
+#                            (Det a)
+#                            (Noun sandwitch))))).))
+#New Rules:
+#   NP   NP CC-NP
+#   CC-NP   Conj NP
+#   VP  Verb CC-VP
+#   CC-VP   Conj VP\CC-VP
+#   VP\CC-VP Verb NP
+#   Conj    and
+
+# (c) the president sighed .
+#
+#Pos: the\Det president\Noun sighed\Verb
+#
+#Tree:
+#     (ROOT
+#        (S
+#           (NP
+#               (Det the)
+#               (Noun president))
+#           (Verb-d sighed)).)
+#
+#New Rules:
+#  Verb-d    sighed
+
+# (d) the president thought that a sandwich sighed .
+#
+#Pos: the\Det president\Noun thought\Verb-c that\Comp a\Det sandwich\Noun sighed\Verb-d .
+#
+#Tree:
+#     (ROOT
+#        (S
+#           (NP
+#               (Det the)
+#               (Noun president))
+#           (VP
+#               (Verb-c thought)  #Verb-c verb that is composable
+#               (CP
+#                    (Comp that)
+#                    (S
+#                        (NP
+#                                (Det a)
+#                                (Noun sandwich))
+#                        (Verb-d sighed)))))).)) #Verb-d verb that is distrinsic
+#
+#New Rules:
+#   VP  Verb-c CP
+#   Verb-c thought
+#   CP  Comp S
+#   Comp that
+#   S   NP Verb-d
+
+
+# (e) it perplexed the president that a sandwich ate Sally .
+#
+#Pos: it perplexed the president that a sandwich ate Sally .
+#
+#Tree:
+#    (ROOT
+#        (S
+#            (Noun-u it)
+#            (VP\S
+#                (Verb-cd perplexed) #special form of verb that can be composed but is distrinsic
+#                (NP-CP
+#                        (NP
+#                            (Det the)
+#                            (Noun president))
+#                        (CP
+#                            (Comp that)
+#                            (S
+#                                (NP
+#                                    (Det a)
+#                                    (Noun sandwich))
+#                                (VP
+#                                    (Verb ate)
+#                                    (Noun-u Sally)))))).))
+#
+#Rules:
+#   S   Noun-u VP\S
+#   VP\S  Verb-cd NP-CP
+#   Verb-cd  perplexed
+#   NP-CP   NP CP
+#   Comp    that
+#   VP  Verb Noun-u
+
+
+# (f) the very very very perplexed president ate a sandwich .
+#
+#Pos: the\Det very\Adv very\Adv very\Adv perplexed\Adj president\Noun ate\Verb a\Det sandwich\Noun .
+#
+#Tree:
+#    (ROOT
+#        (S
+#            (NP
+#                (Det the)
+#                (NP\NP
+#                    (AP
+#                        (Adv very)
+#                        (AP
+#                            (Adv very)
+#                            (AP
+#                                (Adv very)
+#                                (Adj perplexed))))
+#                    (Noun president)))
+#            (VP
+#                (Verb ate)
+#                (NP
+#                    (Det a)
+#                    (Noun sandwich))).))
+#
+#New Rules:
+#   NP  Det NP\NP
+#   NP\NP   AP Noun
+#   AP  Adv Adj
+#   AP\AP  Adv Adv
+#   AP AP\AP Adj
+#   Adv very
+#   Noun president
+#   VP Verb NP
 
 
 
+# (g) the president worked on every proposal on the desk .
+#
+#Pos: the\Det president\Noun worked\Verb-d on\Prep every\Det proposal\Noun on\Prep the\Det desk\Noun .
+#
+#Tree:
+#    (ROOT
+#        (S
+#            (NP
+#                (Det the)
+#                (Noun president))
+#            (VP-PP
+#                (Verb-d worked)
+#                (PP
+#                    (Prep on)
+#                    (NP\PP    #spaical case for this places
+#                        (NP
+#                            (Det every)
+#                            (Noun proposal))
+#                        (PP
+#                            (Prep on)
+#                            (NP\PP
+#                                (Det the)
+#                                (Noun desk)))))).))
+#
+#
+#Rules:
+#   S   NP VP-PP
+#   VP-PP  Verb-d PP
+#   NP\PP   NP PP
+#   PP  Prep NP\PP
+#   NP\PP   Det Noun
 
 
+# (h) Sally is lazy .
+#
+#Pos: Sally\Noun-u is\Verb-z lazy\Adj
+#
+#Tree:
+#    (ROOT
+#        (S
+#            (Noun-u Sally)
+#            (VP
+#                (Verb-z is) #auxilary verb
+#                (Adj lazy)).))
+#
+#Rules:
+#   VP  Verb-z Adj
+#   Verb-z  is
+#   Adj lazy
 
+# (i) Sally is eating a sandwich.
+#
+#Pos: Sally\Noun-u is\Verb-z eating\Adj
+#
+#Tree:
+#    (ROOT
+#        (S
+#            (Noun-u Sally)
+#            (VP
+#                (Verb-z is) #auxilary verb
+#                (VPG
+#                   (Verb-g eating) #ing verb
+#                   (NP
+#                       (Det a)
+#                       (Noun Pizza)))).))
+#
+#Rules:
+#   VP  Verb-z VPG
+#   VPG Verb-g NP
+#   Verb-g  eating
+#   Noun Pizza
+
+
+# (j) the president thought that sally is a sandwich .
+#
+#Pos: the\Det president\Noun thought\Verb-c that\Comp a\Det sandwich\Noun sighed\Verb-d .
+#
+#Tree:
+#     (ROOT
+#        (S
+#           (NP
+#               (Det the)
+#               (Noun president))
+#           (VP
+#               (Verb-c thought)  #Verb-c verb that is composable
+#               (CP
+#                    (Comp that)
+#                       (S
+#                           (Noun-u Sally)
+#                           (VP
+#                               (Verb-z is) #auxilary verb
+#                               (NP
+#                                    (Det a)
+#                                    (Noun sandwich)))).))
+#
+#Rules:
+#   VP  Verb-c CP
+#   Verb-c thought
+#   VP  Verb-z NP

@@ -70,7 +70,10 @@ if __name__ == '__main__':
         n = int(sys.argv[sys.argv.index('-n') + 1])
     except:
         n = 1
-    pcfg = PCFG.from_file(sys.argv[1])
+    grammar_file = sys.argv[1]
+    pcfg = PCFG.from_file(grammar_file)
+    if '-o' in sys.argv:
+        sys.stdout = open('{}.gen'.format(grammar_file), 'w+')
     for i in range(n):
         print(pcfg.random_sent(tree='-t' in sys.argv))
 
