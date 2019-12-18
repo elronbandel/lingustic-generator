@@ -1,47 +1,92 @@
+#######################################
 # introduction:
 # in this file we first included the old rules with weights that make the more common ones more common in the generated sentences.
 # the metodolgy we used is first to analyse the parsing tree of the sentences and then to derive rules
 # than, we modified the Rules to fit the complexities of the Rules Combinations
-
+# the full analasys is under the summarized grammar
 #######################################
-# the old Rules
-########################################
 
+############################################
+# The extended new grammar rules.  with new conventions
+#   Part-x = Part of kind x
+#   T1-T2 = Non Terminal lead to T1, T2
+#   T1/T2 = T1 that arrived from T2
+############################################
 3	ROOT	S .
 2	ROOT	S !
-1	ROOT	is it true that S ?     # mixing terminals and nonterminals is ok.
+1	ROOT	is it true that S ?     
+
 5	S	NP VP
+2   S   NP Verb-d
+1   S   Noun-u VP\S
+3   S   Noun-u VP
+
 2	VP	Verb NP
+1   VP Verb NP
+1   VP  Verb-z Adj
+1   VP  Verb-z VPG
+1   VPG Verb-g NP
+1   VP  Verb-c CP
+1   VP  Verb-z NP
+1   VP\S  Verb-cd NP-CP
+1   VP  Verb Noun-u
+
 4	NP	Det Noun
-2	NP	NP PP
-3	PP	Prep NP
-3	Noun	Adj Noun
+1	NP	NP PP
+1   NP-CP   NP CP
+1   NP  Det NP\NP
+1   NP\NP   AP Noun
+
+1	PP	Prep NP
+1   CP  Comp S
+3   AP  Adv Adj
+1   AP\AP  Adv Adv
+1   AP AP\AP Adj
+
+1	Noun	Adj Noun
+
 1	Verb	ate
 1	Verb	wanted
 1	Verb	kissed
 1	Verb	understood
 1	Verb	pickled
-1	Det	the
-1	Det	a
+1   Verb-c thought   #verb that carry complex sentence "tought that" + S
+1   Verb-g  eating   #verb with ing
+1	Verb-d    sighed  #disterminstic verb
+1   Verb-cd  perplexed  #verb that is complex disterminstic
+1   Verb-z  is
+
+4	Det	the
+4	Det	a
 1	Det	every
+
 1	Noun	president
 1	Noun	sandwich
 1	Noun	pickle
 1	Noun	chief of staff
 1	Noun	floor
+1   Noun	pizza
+1   Noun-u  Sally   #noun which is proper or unique
+
 1	Adj	fine
 1	Adj	delicious
 1	Adj	perplexed
 1	Adj	pickled
+1   Adj	lazy
+
+1   Adv very
+
 1	Prep	with
 1	Prep	on
 1	Prep	under
 1	Prep	in
 
+1   Comp    that
+
 
 ###########################
 #
-# genrating new rules by their grammar tree:
+# review of the process of generating new rules by their grammar tree:
 #
 ##########################
 
@@ -62,9 +107,8 @@
 #                     (Noun sandwitch)
 #
 #New Rules:
-
-3   S   Noun-u VP
-1   Noun-u  Sally
+#   S   Noun-u VP
+#   Noun-u  Sally
 
 # (b) Sally and the president wanted and ate a sandwich .
 #
@@ -91,13 +135,12 @@
 #                            (Det a)
 #                            (Noun sandwitch))))).))
 #New Rules:
-
-1   NP   NP CC-NP
-1   CC-NP   Conj NP
-1   VP  Verb CC-VP
-1   CC-VP   Conj VP\CC-VP
-2   VP\CC-VP Verb NP
-1   Conj    and
+#   NP   NP CC-NP
+#   CC-NP   Conj NP
+#   VP  Verb CC-VP
+#   CC-VP   Conj VP\CC-VP
+#   VP\CC-VP Verb NP
+#   Conj    and
 
 # (c) the president sighed .
 #
@@ -112,8 +155,7 @@
 #           (Verb-d sighed)).)
 #
 #New Rules:
-
-1  Verb-d    sighed
+#  Verb-d    sighed
 
 # (d) the president thought that a sandwich sighed .
 #
@@ -136,12 +178,11 @@
 #                        (Verb-d sighed)))))).)) #Verb-d verb that is distrinsic
 #
 #New Rules:
-
-1   VP  Verb-c CP
-1   Verb-c thought
-1   CP  Comp S
-1   Comp that
-2   S   NP Verb-d
+#   VP  Verb-c CP
+#   Verb-c thought
+#   CP  Comp S
+#   Comp that
+#   S   NP Verb-d
 
 
 # (e) it perplexed the president that a sandwich ate Sally .
@@ -169,13 +210,12 @@
 #                                    (Noun-u Sally)))))).))
 #
 #Rules:
-
-1   S   Noun-u VP\S
-1   VP\S  Verb-cd NP-CP
-1   Verb-cd  perplexed
-1   NP-CP   NP CP
-1   Comp    that
-1   VP  Verb Noun-u
+#   S   Noun-u VP\S
+#   VP\S  Verb-cd NP-CP
+#   Verb-cd  perplexed
+#   NP-CP   NP CP
+#   Comp    that
+#   VP  Verb Noun-u
 
 
 # (f) the very very very perplexed president ate a sandwich .
@@ -203,16 +243,14 @@
 #                    (Noun sandwich))).))
 #
 #New Rules:
-
-
-1   NP  Det NP\NP
-1   NP\NP   AP Noun
-3   AP  Adv Adj
-1   AP\AP  Adv Adv
-1   AP AP\AP Adj
-1   Adv very
-1   Noun president
-1   VP Verb NP
+#   NP  Det NP\NP
+#   NP\NP   AP Noun
+#   AP  Adv Adj
+#   AP\AP  Adv Adv
+#   AP AP\AP Adj
+#   Adv very
+#   Noun president
+#   VP Verb NP
 
 
 
@@ -239,15 +277,14 @@
 #                            (NP\PP
 #                                (Det the)
 #                                (Noun desk)))))).))
-#                         
-#    
+#
+#
 #Rules:
-
-2   S   NP VP-PP
-1   VP-PP  Verb-d PP
-1   NP\PP   NP PP
-1   PP  Prep NP\PP
-4   NP\PP   Det Noun
+#   S   NP VP-PP
+#   VP-PP  Verb-d PP
+#   NP\PP   NP PP
+#   PP  Prep NP\PP
+#   NP\PP   Det Noun
 
 
 # (h) Sally is lazy .
@@ -263,10 +300,9 @@
 #                (Adj lazy)).))
 #
 #Rules:
-
-1   VP  Verb-z Adj
-1   Verb-z  is
-1   Adj lazy
+#   VP  Verb-z Adj
+#   Verb-z  is
+#   Adj lazy
 
 # (i) Sally is eating a sandwich.
 #
@@ -285,12 +321,10 @@
 #                       (Noun Pizza)))).))
 #
 #Rules:
-
-
-1   VP  Verb-z VPG
-1   VPG Verb-g NP
-1   Verb-g  eating
-1   Noun Pizza
+#   VP  Verb-z VPG
+#   VPG Verb-g NP
+#   Verb-g  eating
+#   Noun Pizza
 
 
 # (j) the president thought that sally is a sandwich .
@@ -316,8 +350,6 @@
 #                                    (Noun sandwich)))).))
 #
 #Rules:
-
-
-1   VP  Verb-c CP
-1   Verb-c thought
-1   VP  Verb-z NP
+#   VP  Verb-c CP
+#   Verb-c thought
+#   VP  Verb-z NP
